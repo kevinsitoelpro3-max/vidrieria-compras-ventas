@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vidriería — Registro de Compras y Ventas</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="app-header">
+  <h1>🪟 Vidriería — Registro de Compras y Ventas</h1>
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="resumen">Resumen</button>
+    <button class="tab-btn" data-tab="ventas">Ventas</button>
+    <button class="tab-btn" data-tab="compras">Compras</button>
+    <button class="tab-btn" data-tab="clientes">Clientes</button>
+  </nav>
+</header>
+
+<main>
+  <!-- RESUMEN -->
+  <section id="resumen" class="tab-panel active">
+    <div class="cards">
+      <div class="card">
+        <span class="card-label">Total Ventas</span>
+        <span class="card-value positive" id="resumen-total-ventas">$0.00</span>
+      </div>
+      <div class="card">
+        <span class="card-label">Total Compras</span>
+        <span class="card-value negative" id="resumen-total-compras">$0.00</span>
+      </div>
+      <div class="card">
+        <span class="card-label">Balance</span>
+        <span class="card-value" id="resumen-balance">$0.00</span>
+      </div>
+    </div>
+    <div class="resumen-detalle">
+      <p><span id="resumen-count-ventas">0</span> ventas registradas</p>
+      <p><span id="resumen-count-compras">0</span> compras registradas</p>
+    </div>
+  </section>
+
+  <!-- VENTAS -->
+  <section id="ventas" class="tab-panel">
+    <form id="form-ventas" class="form-registro">
+      <div class="form-row">
+        <label>Fecha
+          <input type="date" name="fecha" required>
+        </label>
+        <label>Cliente
+          <input type="text" name="cliente" placeholder="Nombre del cliente" list="clientes-list" required>
+        </label>
+      </div>
+      <div class="items-list" data-items></div>
+      <button type="button" class="btn-agregar-item">+ Agregar producto</button>
+      <button type="submit">Agregar venta</button>
+    </form>
+
+    <div class="tabla-header">
+      <h2>Ventas registradas</h2>
+      <button type="button" id="export-ventas" class="btn-secondary">Exportar CSV</button>
+    </div>
+    <table class="tabla-registro">
+      <thead>
+        <tr>
+          <th>Fecha</th><th>Cliente</th><th>Productos</th><th>Total</th><th></th>
+        </tr>
+      </thead>
+      <tbody id="tabla-ventas-body"></tbody>
+    </table>
+    <datalist id="clientes-list"></datalist>
+    <p class="empty-msg" id="ventas-empty">Todavía no hay ventas registradas.</p>
+  </section>
+
+  <!-- COMPRAS -->
+  <section id="compras" class="tab-panel">
+    <form id="form-compras" class="form-registro">
+      <div class="form-row">
+        <label>Fecha
+          <input type="date" name="fecha" required>
+        </label>
+        <label>Proveedor
+          <input type="text" name="proveedor" placeholder="Nombre del proveedor" required>
+        </label>
+      </div>
+      <div class="items-list" data-items></div>
+      <button type="button" class="btn-agregar-item">+ Agregar producto</button>
+      <button type="submit">Agregar compra</button>
+    </form>
+
+    <div class="tabla-header">
+      <h2>Compras registradas</h2>
+      <button type="button" id="export-compras" class="btn-secondary">Exportar CSV</button>
+    </div>
+    <table class="tabla-registro">
+      <thead>
+        <tr>
+          <th>Fecha</th><th>Proveedor</th><th>Productos</th><th>Total</th><th></th>
+        </tr>
+      </thead>
+      <tbody id="tabla-compras-body"></tbody>
+    </table>
+    <p class="empty-msg" id="compras-empty">Todavía no hay compras registradas.</p>
+  </section>
+
+  <!-- CLIENTES -->
+  <section id="clientes" class="tab-panel">
+    <h2>Registro de clientes</h2>
+    <p class="empty-msg" id="clientes-empty">Todavía no hay clientes registrados. Se agregan automáticamente al cargar una venta.</p>
+    <table class="tabla-registro" id="tabla-clientes">
+      <thead>
+        <tr>
+          <th>Cliente</th><th>Compras</th><th>Total gastado</th><th>Última compra</th>
+        </tr>
+      </thead>
+      <tbody id="tabla-clientes-body"></tbody>
+    </table>
+  </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
