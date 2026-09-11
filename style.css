@@ -268,3 +268,113 @@ button {
   padding: 1rem;
   font-size: 0.9rem;
 }
+
+/* ---------- Cotizador ---------- */
+.cot-checkbox {
+  flex-direction: row !important;
+  align-items: center;
+  gap: 0.5rem !important;
+}
+
+.cot-checkbox input { width: auto; }
+
+.cot-resumen {
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  margin: 1rem 0;
+}
+
+.cot-resumen-linea {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.25rem 0;
+  font-size: 0.95rem;
+}
+
+.cot-resumen-linea.total {
+  font-size: 1.2rem;
+  font-weight: 700;
+  border-top: 1px solid var(--color-border);
+  margin-top: 0.4rem;
+  padding-top: 0.6rem;
+}
+
+.cot-acciones {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.cot-acciones button[type="button"]:not(.btn-secondary) {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.cot-acciones button[type="button"]:not(.btn-secondary):hover { background: var(--color-primary-dark); }
+
+.cot-config {
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  padding: 0.75rem 1.25rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  margin-bottom: 1.5rem;
+}
+
+.cot-config summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 0.5rem 0;
+}
+
+.cot-config-body { padding-top: 0.5rem; }
+
+.cfg-fila {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.cfg-fila span.cfg-label {
+  flex: 2;
+  min-width: 160px;
+  font-size: 0.9rem;
+}
+
+.cfg-fila input {
+  flex: 1;
+  min-width: 90px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 0.4rem 0.5rem;
+  font-size: 0.9rem;
+}
+
+.badge-aviso {
+  background: #fdecea;
+  color: var(--color-negative);
+  border: 1px solid #f5b7b1;
+  border-radius: 6px;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+
+.cot-print-only { display: none; }
+
+@media print {
+  .app-header, .tabs, .cot-print-hide { display: none !important; }
+  .cot-print-only { display: block; }
+  body { background: #fff; }
+  main { max-width: 100%; padding: 0; }
+  .form-registro, .cot-resumen, .tabla-registro { box-shadow: none; }
+}

@@ -15,6 +15,7 @@
   <h1>🪟 Vidriería — Registro de Compras y Ventas</h1>
   <nav class="tabs">
     <button class="tab-btn active" data-tab="resumen">Resumen</button>
+    <button class="tab-btn" data-tab="cotizador">Cotizador</button>
     <button class="tab-btn" data-tab="ventas">Ventas</button>
     <button class="tab-btn" data-tab="compras">Compras</button>
     <button class="tab-btn" data-tab="clientes">Clientes</button>
@@ -41,6 +42,159 @@
     <div class="resumen-detalle">
       <p><span id="resumen-count-ventas">0</span> ventas registradas</p>
       <p><span id="resumen-count-compras">0</span> compras registradas</p>
+    </div>
+  </section>
+
+  <!-- COTIZADOR -->
+  <section id="cotizador" class="tab-panel">
+    <div class="cot-print-only" id="cot-print-header">
+      <h2 id="cot-print-negocio">Vidriería</h2>
+      <div id="cot-print-nit"></div>
+    </div>
+
+    <h2 class="cot-print-hide">Nueva cotización</h2>
+    <div class="form-registro">
+      <div class="form-row">
+        <label>Cliente
+          <input type="text" id="cot-cliente" placeholder="Nombre del cliente" list="clientes-list">
+        </label>
+        <label>Teléfono
+          <input type="text" id="cot-telefono" placeholder="Teléfono">
+        </label>
+        <label>Lugar / ubicación
+          <input type="text" id="cot-lugar" placeholder="Dirección o referencia">
+        </label>
+      </div>
+
+      <div class="cot-print-hide">
+        <h3>Agregar producto</h3>
+        <div class="form-row">
+          <label class="grow">Categoría
+            <select id="cot-categoria">
+              <option value="vidrio">Vidrio y DVH (por m²)</option>
+              <option value="pvc_catalogo">PVC — medida fija (catálogo)</option>
+              <option value="pvc_medida">PVC — ventana o puerta corrediza (por medida)</option>
+            </select>
+          </label>
+          <label class="grow">Producto
+            <select id="cot-producto"></select>
+          </label>
+        </div>
+        <div class="form-row">
+          <label id="cot-campo-ancho">Ancho (cm)
+            <input type="number" id="cot-ancho" min="1" step="0.5" placeholder="Ej. 120">
+          </label>
+          <label id="cot-campo-alto">Alto (cm)
+            <input type="number" id="cot-alto" min="1" step="0.5" placeholder="Ej. 100">
+          </label>
+          <label id="cot-campo-hojas">Hojas
+            <input type="number" id="cot-hojas" min="1" step="1" value="2">
+          </label>
+          <label>Cantidad
+            <input type="number" id="cot-cantidad" min="1" step="1" value="1">
+          </label>
+        </div>
+        <div class="form-row">
+          <label class="cot-checkbox">
+            <input type="checkbox" id="cot-altura">
+            Requiere andamio / altura (recargo 20%)
+          </label>
+          <label class="cot-checkbox">
+            <input type="checkbox" id="cot-perforacion">
+            Corte especial / perforación (+$50)
+          </label>
+        </div>
+        <p class="empty-msg" id="cot-aviso-puerta" hidden></p>
+        <button type="button" class="btn-agregar-item" id="cot-agregar-linea" style="margin-bottom:0">+ Agregar línea a la cotización</button>
+      </div>
+    </div>
+
+    <div class="tabla-header cot-print-hide">
+      <h2>Líneas de esta cotización</h2>
+    </div>
+    <table class="tabla-registro">
+      <thead>
+        <tr>
+          <th>Producto</th><th>Medida</th><th>Cant.</th><th>Precio unit.</th><th>Subtotal</th><th class="cot-print-hide"></th>
+        </tr>
+      </thead>
+      <tbody id="cot-lineas-body"></tbody>
+    </table>
+    <p class="empty-msg" id="cot-lineas-empty">Todavía no agregaste ningún producto.</p>
+
+    <div class="form-registro cot-print-hide">
+      <div class="form-row">
+        <label>Km adicionales (fuera del radio incluido)
+          <input type="number" id="cot-km" min="0" step="1" value="0">
+        </label>
+        <label>Descuento (%)
+          <input type="number" id="cot-descuento" min="0" max="100" step="1" value="0">
+        </label>
+        <label>Anticipo a solicitar (%)
+          <input type="number" id="cot-anticipo" min="0" max="100" step="1" value="50">
+        </label>
+      </div>
+    </div>
+
+    <div class="cot-resumen" id="cot-resumen"></div>
+
+    <div class="cot-acciones cot-print-hide">
+      <button type="button" class="btn-secondary" id="cot-nueva">Nueva cotización</button>
+      <button type="button" id="cot-guardar">Guardar cotización</button>
+      <button type="button" class="btn-secondary" id="cot-imprimir">Imprimir / PDF</button>
+    </div>
+
+    <div class="cot-print-only" id="cot-print-notas">
+      Cotización válida por 15 días. Anticipo requerido para iniciar el trabajo; saldo contra entrega. El vidrio se corta solo después de recibido el anticipo.
+    </div>
+
+    <div class="cot-print-hide">
+      <div class="tabla-header">
+        <h2>Cotizaciones guardadas</h2>
+        <button type="button" id="export-cotizaciones" class="btn-secondary">Exportar CSV</button>
+      </div>
+      <table class="tabla-registro">
+        <thead>
+          <tr><th>Fecha</th><th>Cliente</th><th>Total</th><th>Anticipo</th><th></th></tr>
+        </thead>
+        <tbody id="tabla-cotizaciones-body"></tbody>
+      </table>
+      <p class="empty-msg" id="cotizaciones-empty">Todavía no hay cotizaciones guardadas.</p>
+
+      <details class="cot-config">
+        <summary>⚙ Configuración de precios (solo dueño/admin)</summary>
+        <div class="cot-config-body">
+          <h3>Datos del negocio</h3>
+          <div class="form-row">
+            <label>Nombre del negocio
+              <input type="text" id="cfg-negocio-nombre">
+            </label>
+            <label>NIT
+              <input type="text" id="cfg-negocio-nit">
+            </label>
+          </div>
+
+          <h3>Precios de vidrio y DVH (Q por m² instalado)</h3>
+          <div id="cfg-vidrios"></div>
+
+          <h3>PVC — catálogo de medida fija (precio por unidad)</h3>
+          <div id="cfg-pvc-catalogo"></div>
+
+          <h3>Reglas generales</h3>
+          <div id="cfg-reglas"></div>
+
+          <details>
+            <summary>Parámetros avanzados del cálculo de PVC por medida</summary>
+            <p class="empty-msg">Estos números vienen del costeo de la hoja "PVC" del Excel (perfiles, herrajes, horas y pisos de precio). Solo tocalos si cambiaron los precios del proveedor.</p>
+            <div id="cfg-pvc-params"></div>
+          </details>
+
+          <div class="cot-acciones">
+            <button type="button" id="cfg-guardar">Guardar configuración</button>
+            <button type="button" class="btn-secondary" id="cfg-restaurar">Restaurar valores del Excel</button>
+          </div>
+        </div>
+      </details>
     </div>
   </section>
 
